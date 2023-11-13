@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1490.0",
+    "aws-sdk-mock": "^5.8.0"
+  }
+}
