@@ -17,9 +17,10 @@ exports.processS3Object = async (event) => {
     console.log('code started');
     const data = await s3.getObject(params).promise();
     console.log('data from s3', data);
+    //Data is recived in form of buffer so convert into string to able to read it.
     let json = (data.Body).toString('utf-8');
     console.log('Data from s3', json);
-
+    //Parse it to json object to manipulate/read
     const convertedArray = JSON.parse(json);
     console.log('Parsed Json', json);
     // Process the JSON data and prepare for batch operations
@@ -29,7 +30,7 @@ exports.processS3Object = async (event) => {
 
     const chunks = [];
     while (items.length > 0) {
-      let chunk = items.splice(0, 1000);
+      let chunk = items.splice(0, 1000); //Splice it into chunks and inserting it into dynamodb
       console.log('Batches', chunk);
       const putRequests = chunk.map(item => ({
         PutRequest: {
@@ -48,23 +49,6 @@ exports.processS3Object = async (event) => {
       console.log(`Inserted ${chunk.length} items into DynamoDB.`);
       
     }
-    // for (const chunk of chunks) {
-    //   const putRequests = chunk.map(item => ({
-    //     PutRequest: {
-    //       Item: item,
-    //     },
-    //   }));
-
-    //   const batchParams = {
-    //     RequestItems: {
-    //       'Business_PSST': putRequests,
-    //     },
-    //   };
-
-    //   await dynamoDB.batchWrite(batchParams).promise();
-
-    //   console.log(`Inserted ${chunk.length} items into DynamoDB.`);
-    // }
     return {
       statusCode: 200,
       body: JSON.stringify('Data inserted successfully'),
