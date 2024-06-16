@@ -9,19 +9,19 @@ provider:
         Action:
           - s3:*
         Resource: 
-          - arn:aws:s3:::psstdynamodbbuckettest/* #provide the bucket name here
+          - arn:aws:s3:::psstdynamodbbuckettests/* #provide the bucket name here
       - Effect: Allow
         Action:
           - dynamodb:*
         Resource:
-          - arn:aws:dynamodb:us-east-1:774104967360:table/Business_PSST #Provice the arn of dynamodb table
+          - arn:aws:dynamodb:us-east-1:424217468030:table/VersionStore #Provice the arn of dynamodb table
 
 functions:
   processS3Object:
     handler: handler.processS3Object
     events:
       - s3:
-          bucket: psstdynamodbbuckettest
+          bucket: psstdynamodbbuckettests
           event: s3:ObjectCreated:*
     timeout: 300
-    memorySize: 3008
+    memorySize: 500

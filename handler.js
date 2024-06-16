@@ -40,10 +40,10 @@ exports.processS3Object = async (event) => {
 
       const batchParams = {
         RequestItems: {
-          'Business_PSST': putRequests,
+          'VersionStore': putRequests,
         },
       };
-
+      console.log('Batch Params', batchParams);
       await dynamoDB.batchWrite(batchParams).promise();
 
       console.log(`Inserted ${chunk.length} items into DynamoDB.`);
